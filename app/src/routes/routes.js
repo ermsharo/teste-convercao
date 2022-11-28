@@ -2,12 +2,13 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import styled from "styled-components";
-import Header from "./components/Header";
-import Board from "./components/Board";
-import SingIn from "./components/SingIn";
+import Header from "./../components/Header";
+import Board from "../components/Board";
+import SingIn from "../components/SingIn";
 
 const AppBox = styled.div`
-
+  background-color: #673AB7;
+  color: #ffd740;
   min-height: 100vh;
 
   input {
@@ -20,7 +21,7 @@ const AppBox = styled.div`
   }
 `;
 
-function App() {
+function RouterGuide() {
   return (
     <AppBox>
       <Helmet>
@@ -56,4 +57,4 @@ function App() {
   );
 }
 
-export default App;
+export default Routes;
