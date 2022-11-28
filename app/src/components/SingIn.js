@@ -52,21 +52,7 @@ const LogoBox = styled.div`
   padding: 16px;
 `;
 
-const CadastrarButton = styled.button`
-     background-color: #ffd740;
-     color: #673ab7;
-`;
 
-const CreateAccountButton = styled.div`
-  font-family: "Varela Round", sans-serif;
-  font-weight: 600;
-  cursor: pointer;
-  margin-top: 16px;
-  padding-left: 8px;
-  &:hover {
-    opacity: 0.7;
-  }
-`;
 
 export default function SingIn() {
   const [formInputs, setFormInputs] = useState({
@@ -93,20 +79,6 @@ export default function SingIn() {
     localStorage.setItem("logged", true);
   };
 
-  const singIn = async () => {
-    await axios
-      .post("http://localhost:5000/auth/singin", {
-        formInputs,
-      })
-      .then((response) => {
-        setRequestErrorAwnser(false);
-        saveUserInfo(response.data.id, response.data.token, response.data.name);
-        navigate("/");
-      })
-      .catch((error) => {
-        setRequestErrorAwnser(error.response.data);
-      });
-  };
 
   return (
     <>

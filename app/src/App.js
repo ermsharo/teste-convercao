@@ -46,7 +46,7 @@ function App() {
         <BrowserRouter>
           <Header />
           <Routes>
-            <Route path="/" element={<SingIn />}></Route>
+            <Route path="/" element={<Board />}></Route>
             <Route path="/dart-converter/sign-in" element={<SingIn />}></Route>
             <Route path="/dart-converter/home" element={<Board />}></Route>
           </Routes>
