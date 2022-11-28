@@ -7,7 +7,6 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-
 const BoardBox = styled.div`
   width: 100%;
   font-family: "Varela Round", sans-serif;
@@ -36,7 +35,6 @@ const LoginBox = styled.div`
     background-color: #673ab7;
     border-radius: 20px;
 
-
     &:hover {
       background-color: #673ab7;
       opacity: 0.9;
@@ -44,15 +42,11 @@ const LoginBox = styled.div`
   }
 `;
 
-
-
 const LogoBox = styled.div`
   display: flex;
   justify-content: center;
   padding: 16px;
 `;
-
-
 
 export default function SingIn() {
   const [formInputs, setFormInputs] = useState({
@@ -79,13 +73,10 @@ export default function SingIn() {
     localStorage.setItem("logged", true);
   };
 
-
   return (
     <>
       <BoardBox>
-        <LogoBox>
-
-        </LogoBox>
+        <LogoBox></LogoBox>
         <Grid>
           <LoginBox>
             <TextField
@@ -118,7 +109,7 @@ export default function SingIn() {
               fullWidth
               variant="contained"
             >
-             Entrar
+              Entrar
             </Button>
             <Button
               onClick={() => {
@@ -127,7 +118,7 @@ export default function SingIn() {
               fullWidth
               variant="contained"
             >
-           Cadastrar
+              Cadastrar
             </Button>
 
             {/* <CreateAccountButton

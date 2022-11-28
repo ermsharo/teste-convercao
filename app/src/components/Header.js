@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 const HeaderBox = styled.div`
   display: flex;
   justify-content: space-between;
-  background-color: #673AB7;
+  background-color: #673ab7;
   color: #ffd740;
   padding: 16px 32px;
   border: 6px;
@@ -22,7 +22,7 @@ const LogoBox = styled.div`
 `;
 
 const Header = () => {
-//   const navigate = useNavigate();
+  //   const navigate = useNavigate();
   return (
     <header>
       <HeaderBox>
@@ -31,9 +31,9 @@ const Header = () => {
         //     // navigate("/words");
         //   }}
         >
-            Dart converter
+          Dart converter
         </LogoBox>
-          <div>Sair</div>
+        <div>Sair</div>
       </HeaderBox>
     </header>
   );

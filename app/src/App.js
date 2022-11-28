@@ -1,4 +1,3 @@
-
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import styled from "styled-components";
@@ -7,7 +6,6 @@ import Board from "./components/Board";
 import SingIn from "./components/SingIn";
 
 const AppBox = styled.div`
-
   min-height: 100vh;
 
   input {
