@@ -88,6 +88,14 @@ const Board = () => {
     });
     setNewUserArray(newUsers);
     console.log("->", newUserArray);
+    refreshUserBoards();
+  };
+
+  const emptyNewUserArray = () => {
+    let newUsers = newUserArray;
+    newUsers.pop();
+    setNewUserArray(newUsers);
+    refreshUserBoards();
   };
 
   if (isLoading) return <>Loading</>;
@@ -136,14 +144,14 @@ const Board = () => {
                     />
                   ))}
 
-                  {/* {newUserArray.map((row) => (
+                  {newUserArray.map((row) => (
                     <NewUserLine
-
                       refreshUserBoards={refreshUserBoards}
+                      emptyNewUserArray={emptyNewUserArray}
                     />
-                  ))} */}
+                  ))}
 
-                  <NewUserLine refreshUserBoards={refreshUserBoards} />
+                  {/* <NewUserLine refreshUserBoards={refreshUserBoards} /> */}
                 </TableBody>
               </Table>
             </TableContainer>

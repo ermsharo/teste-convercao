@@ -10,6 +10,7 @@ import {
   getAplicationId,
   getToken,
 } from "../services/storageManagement";
+import Loading from "./Loading";
 
 const BoardBox = styled.div`
   width: 100%;
@@ -60,6 +61,8 @@ export default function SingIn() {
     id_application: getAplicationId(),
   });
 
+  const [loading, setLoading] = useState(false);
+
   const singIn = async () => {
     const headers = {
       "Content-Type": "application/json",
@@ -67,6 +70,8 @@ export default function SingIn() {
       "Access-Control-Allow-Credentials": true,
       Authorization: `Bearer ${getToken()}`,
     };
+
+    setLoading(true);
     await axios
       .post(
         "https://dart-converter-api.azurewebsites.net/api/auth/token",
@@ -86,10 +91,13 @@ export default function SingIn() {
           response.data.user.username,
           response.data.access_token
         );
+        setLoading(false);
         navigate("/dart-converter/home");
       })
       .catch((error) => {
         //setRequestErrorAwnser(error.response.data);
+        setLoading(false);
+        alert("Falha ao realizar o login");
       });
   };
 
@@ -100,6 +108,7 @@ export default function SingIn() {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Credentials": true,
     };
+    setLoading(true);
     await axios
       .post(
         "https://dart-converter-api.azurewebsites.net/api/user",
@@ -113,10 +122,14 @@ export default function SingIn() {
         }
       )
       .then((response) => {
+        setLoading(false);
         setRequestErrorAwnser(false);
+        alert("Usuario criado com sucesso");
       })
       .catch((error) => {
+        setLoading(false);
         // setRequestErrorAwnser(error.response.data);
+        alert("Dados de cadastro invalidos");
       });
   };
 
@@ -132,6 +145,7 @@ export default function SingIn() {
 
   return (
     <>
+      <Loading open={loading} />
       <BoardBox>
         <LogoBox></LogoBox>
         <Grid>

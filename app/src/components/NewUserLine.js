@@ -4,10 +4,9 @@ import styled from "styled-components";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import { getToken, getAplicationId } from "../services/storageManagement";
-import { useNavigate } from "react-router-dom";
 import TextField from "@mui/material/TextField";
-import { AiTwotoneDelete, AiTwotoneSave, AiFillEdit } from "react-icons/ai";
-
+import { AiTwotoneSave } from "react-icons/ai";
+import Loading from "./Loading";
 const ActionsButton = styled.div`
   display: flex;
   padding: 8px;
@@ -16,9 +15,7 @@ const ActionsButton = styled.div`
   cursor: pointer;
 `;
 
-const NewUserLine = ({ refreshUserBoards }) => {
-  const navigate = useNavigate();
-
+const NewUserLine = ({ refreshUserBoards, emptyNewUserArray }) => {
   const [formInputs, setFormInputs] = useState({
     username: "",
     password: "",
@@ -27,7 +24,10 @@ const NewUserLine = ({ refreshUserBoards }) => {
 
   const [editionMode, setEditionMode] = useState(false);
 
-  const createUser = async (user_id) => {
+  const [loading, setLoading] = useState(false);
+
+  const createUser = async () => {
+    setLoading(true);
     const headers = {
       "Content-Type": "application/json",
       "Access-Control-Allow-Origin": "*",
@@ -47,10 +47,14 @@ const NewUserLine = ({ refreshUserBoards }) => {
         }
       )
       .then(() => {
-        navigate("/dart-converter/home");
+        refreshUserBoards();
+        setLoading(false);
+        alert("Usuario criado com sucesso");
+        emptyNewUserArray();
       })
       .catch(() => {
-        // setRequestErrorAwnser(error.response.data);
+        alert("Não é possivel criar este usuario");
+        setLoading(false);
       });
   };
 
@@ -63,44 +67,46 @@ const NewUserLine = ({ refreshUserBoards }) => {
   }
 
   return (
-    <TableRow sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
-      <TableCell align="center" component="th" scope="row"></TableCell>
-      <TableCell align="center" component="th" scope="row">
-        <TextField
-          fullWidth
-          id="outlined-name"
-          label="Usuário *"
-          name="username"
-          value={formInputs.username}
-          onChange={handleChange}
-        />
-      </TableCell>
-      <TableCell align="center">
-        <TextField
-          type="password"
-          fullWidth
-          id="outlined-name"
-          label="Senha *"
-          name="password"
-          value={formInputs.password}
-          onChange={handleChange}
-        />
-      </TableCell>
-      <TableCell align="center">{formInputs.id_application}</TableCell>
+    <>
+      <Loading open={loading} />
+      <TableRow sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+        <TableCell align="center" component="th" scope="row"></TableCell>
+        <TableCell align="center" component="th" scope="row">
+          <TextField
+            fullWidth
+            id="outlined-name"
+            label="Usuário *"
+            name="username"
+            value={formInputs.username}
+            onChange={handleChange}
+          />
+        </TableCell>
+        <TableCell align="center">
+          <TextField
+            type="password"
+            fullWidth
+            id="outlined-name"
+            label="Senha *"
+            name="password"
+            value={formInputs.password}
+            onChange={handleChange}
+          />
+        </TableCell>
+        <TableCell align="center">{formInputs.id_application}</TableCell>
 
-      <TableCell align="center">
-        <ActionsButton>
-          <div
-            onClick={() => {
-              createUser();
-              refreshUserBoards();
-            }}
-          >
-            <AiTwotoneSave />
-          </div>
-        </ActionsButton>
-      </TableCell>
-    </TableRow>
+        <TableCell align="center">
+          <ActionsButton>
+            <div
+              onClick={() => {
+                createUser();
+              }}
+            >
+              <AiTwotoneSave />
+            </div>
+          </ActionsButton>
+        </TableCell>
+      </TableRow>
+    </>
   );
 };
 export default NewUserLine;
