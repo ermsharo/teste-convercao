@@ -102,7 +102,6 @@ export default function SingIn() {
   };
 
   const createUser = async () => {
-    console.log("create user");
     const headers = {
       "Content-Type": "application/json",
       "Access-Control-Allow-Origin": "*",

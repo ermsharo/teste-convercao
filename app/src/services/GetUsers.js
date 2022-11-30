@@ -23,7 +23,6 @@ export const GetUsersData = () => {
         );
 
         setData(result.data);
-        console.log("Data", result.data);
       } catch (error) {
         setIsError(error.response.data);
       }

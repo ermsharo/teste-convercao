@@ -70,12 +70,9 @@ const Board = () => {
   const [{ data, isLoading, isError }, setRefresh] = GetUsersData();
   const [newUserArray, setNewUserArray] = useState([]);
 
-  useEffect(() => {
-    console.log("Effect");
-  }, [newUserArray]);
+
 
   const refreshUserBoards = () => {
-    console.log("refresh board");
     setRefreshBoard(!refreshBoard);
     setRefresh(refreshBoard);
   };
@@ -87,7 +84,6 @@ const Board = () => {
       password: "",
     });
     setNewUserArray(newUsers);
-    console.log("->", newUserArray);
     refreshUserBoards();
   };
 
@@ -151,7 +147,6 @@ const Board = () => {
                     />
                   ))}
 
-                  {/* <NewUserLine refreshUserBoards={refreshUserBoards} /> */}
                 </TableBody>
               </Table>
             </TableContainer>
