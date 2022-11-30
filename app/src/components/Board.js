@@ -1,5 +1,4 @@
-import * as React from "react";
-
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Grid } from "../style/GridSystem";
 import { useNavigate } from "react-router-dom";
@@ -39,8 +38,14 @@ const Board = () => {
   const navigate = useNavigate();
 
   const userInfo = getUserInfo();
+  const [refreshBoard, setRefreshBoard] = useState(false);
+  const [{ data, isLoading, isError }, setRefresh] = GetUsersData();
 
-  const { data, isLoading, isError } = GetUsersData();
+  const refreshUserBoards = () => {
+    console.log("refresh board");
+    setRefreshBoard(!refreshBoard);
+    setRefresh(refreshBoard);
+  };
 
   if (isLoading) return <>Loading</>;
 
@@ -71,6 +76,7 @@ const Board = () => {
                       username={row.username}
                       password={row.password}
                       id_application={row.id_application}
+                      refreshUserBoards={refreshUserBoards}
                     />
                   ))}
                 </TableBody>

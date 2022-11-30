@@ -12,7 +12,7 @@ const ActionsButton = styled.div`
   justify-content: space-around;
 `;
 
-const TableLine = ({ user_id, username, password, id_application }) => {
+const TableLine = ({ user_id, username, password, id_application , refreshUserBoards}) => {
   const navigate = useNavigate();
 
   const [editionMode, setEditionMode] = useState(false);
@@ -59,6 +59,7 @@ const TableLine = ({ user_id, username, password, id_application }) => {
           <div
             onClick={() => {
               deleteUser(user_id);
+              refreshUserBoards();
             }}
           >
             DELETE

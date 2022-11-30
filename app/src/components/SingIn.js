@@ -62,7 +62,6 @@ export default function SingIn() {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Credentials": true,
     };
-    // console.log("response", formInputs);
     await axios
       .post(
         "https://dart-converter-api.azurewebsites.net/api/auth/token",
@@ -95,10 +94,9 @@ export default function SingIn() {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Credentials": true,
     };
-    // console.log("response", formInputs);
     await axios
       .post(
-        "https://dart-converter-api.azurewebsites.net/api/auth/token",
+        "https://dart-converter-api.azurewebsites.net/api/user",
         {
           username: formInputs.username,
           password: formInputs.password,
@@ -115,10 +113,11 @@ export default function SingIn() {
           response.data.user.username,
           response.data.access_token
         );
+        console.log("user created",response );
         navigate("/dart-converter/home");
       })
       .catch((error) => {
-        setRequestErrorAwnser(error.response.data);
+        // setRequestErrorAwnser(error.response.data);
       });
   };
 
@@ -132,9 +131,6 @@ export default function SingIn() {
     });
   }
 
-  const loginUser = () => {
-    setUserInfo(formInputs.id_application, formInputs.username);
-  };
 
   return (
     <>
@@ -159,12 +155,6 @@ export default function SingIn() {
               value={formInputs.password}
               onChange={handleChange}
             />
-            {/* <Feedback
-              status={requestErrorAwnser}
-              success={false}
-              display={requestErrorAwnser}
-            /> */}
-
             <Button
               onClick={() => {
                 singIn();
@@ -176,21 +166,13 @@ export default function SingIn() {
             </Button>
             <Button
               onClick={() => {
-                // singIn();
+                createUser();
               }}
               fullWidth
               variant="contained"
             >
               Cadastrar
             </Button>
-
-            {/* <CreateAccountButton
-              onClick={() => {
-                navigate("create-account");
-              }}
-            >
-              Create account
-            </CreateAccountButton> */}
           </LoginBox>
         </Grid>
       </BoardBox>

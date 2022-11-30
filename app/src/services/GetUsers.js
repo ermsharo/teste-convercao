@@ -6,6 +6,7 @@ export const GetUsersData = () => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
+  const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -31,7 +32,7 @@ export const GetUsersData = () => {
     };
 
     fetchData();
-  }, []);
+  }, [refresh]);
 
-  return { data, isLoading, isError };
+  return [{ data, isLoading, isError }, setRefresh];
 };
