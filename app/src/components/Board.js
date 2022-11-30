@@ -24,7 +24,7 @@ const BoardTitleText = styled.div`
   font-weight: 400;
 
   font-size: 24px;
-  line-height: 32px;
+  line-height: 40px;
 `;
 
 const TableBox = styled.div`
@@ -55,7 +55,7 @@ const Board = () => {
         </BoardTitleText>
         <TableBox>
           <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }} aria-label="simple table">
+            <Table aria-label="simple table">
               <TableHead>
                 <TableRow>
                   <TableCell align="center">ID</TableCell>

@@ -3,7 +3,6 @@ import TextField from "@mui/material/TextField";
 import { Grid } from "../style/GridSystem";
 import Button from "@mui/material/Button";
 import React, { useState } from "react";
-// import Feedback from "./../Feedback/FeedBack";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -50,9 +49,40 @@ const LogoBox = styled.div`
 
 export default function SingIn() {
   const [formInputs, setFormInputs] = useState({
-    email: "",
+    username: "",
     password: "",
+    id_application: "48699c22-26a2-4126-9a63-f5d0dfd2768b",
   });
+
+  const singIn = async () => {
+    const headers = {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Credentials": true,
+    };
+    console.log("response", formInputs);
+    await axios
+      .post(
+        "https://dart-converter-api.azurewebsites.net/api/auth/token",
+        {
+          username: formInputs.username,
+          password: formInputs.password,
+          id_application: formInputs.id_application,
+        },
+        {
+          headers: headers,
+        }
+      )
+      .then((response) => {
+        setRequestErrorAwnser(false);
+        // saveUserInfo(response.data.id, response.data.token, response.data.name);
+        // navigate("/");
+        console.log("Response here -> ", response);
+      })
+      .catch((error) => {
+        setRequestErrorAwnser(error.response.data);
+      });
+  };
 
   const [requestErrorAwnser, setRequestErrorAwnser] = useState(false);
 
@@ -73,6 +103,11 @@ export default function SingIn() {
     localStorage.setItem("logged", true);
   };
 
+
+  const loginUser = () =>{
+    
+  }
+
   return (
     <>
       <BoardBox>
@@ -83,8 +118,8 @@ export default function SingIn() {
               fullWidth
               id="outlined-name"
               label="Usuário *"
-              name="email"
-              value={formInputs.email}
+              name="username"
+              value={formInputs.username}
               onChange={handleChange}
             />
             <TextField
@@ -104,7 +139,7 @@ export default function SingIn() {
 
             <Button
               onClick={() => {
-                // singIn();
+                singIn();
               }}
               fullWidth
               variant="contained"

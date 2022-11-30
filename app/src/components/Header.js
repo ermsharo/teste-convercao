@@ -1,8 +1,7 @@
 import * as React from "react";
-
 import styled from "styled-components";
-
 import { useNavigate } from "react-router-dom";
+import { logout } from "../services/storageManagement";
 
 const HeaderBox = styled.div`
   display: flex;
@@ -17,23 +16,22 @@ const HeaderBox = styled.div`
   font-size: 24px;
 `;
 
-const LogoBox = styled.div`
-  cursor: pointer;
-`;
+const LogoBox = styled.div``;
 
 const Header = () => {
-  //   const navigate = useNavigate();
+  const navigate = useNavigate();
   return (
     <header>
       <HeaderBox>
-        <LogoBox
-        //   onClick={() => {
-        //     // navigate("/words");
-        //   }}
+        <LogoBox>Dart converter</LogoBox>
+        <div
+          onClick={() => {
+            logout();
+            navigate("/dart-converter/sign-in");
+          }}
         >
-          Dart converter
-        </LogoBox>
-        <div>Sair</div>
+          Sair
+        </div>
       </HeaderBox>
     </header>
   );
