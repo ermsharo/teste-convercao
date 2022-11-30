@@ -5,7 +5,11 @@ import Button from "@mui/material/Button";
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { setUserInfo, getAplicationId } from "../services/storageManagement";
+import {
+  setUserInfo,
+  getAplicationId,
+  getToken,
+} from "../services/storageManagement";
 
 const BoardBox = styled.div`
   width: 100%;
@@ -61,6 +65,7 @@ export default function SingIn() {
       "Content-Type": "application/json",
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Credentials": true,
+      Authorization: `Bearer ${getToken()}`,
     };
     await axios
       .post(

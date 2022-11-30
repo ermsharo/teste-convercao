@@ -5,29 +5,29 @@ import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import { getToken, getAplicationId } from "../services/storageManagement";
 import { useNavigate } from "react-router-dom";
+import TextField from "@mui/material/TextField";
+import { AiTwotoneDelete, AiTwotoneSave, AiFillEdit } from "react-icons/ai";
 
 const ActionsButton = styled.div`
   display: flex;
   padding: 8px;
   justify-content: space-around;
+  font-size: 32px;
+  cursor: pointer;
 `;
 
-const formatPassword = (password) => {
-  if (!password) return "???";
-};
-
-const TableLine = ({
-  user_id,
-  username,
-  password,
-  id_application,
-  refreshUserBoards,
-}) => {
+const NewUserLine = ({ refreshUserBoards }) => {
   const navigate = useNavigate();
+
+  const [formInputs, setFormInputs] = useState({
+    username: "",
+    password: "",
+    id_application: getAplicationId(),
+  });
 
   const [editionMode, setEditionMode] = useState(false);
 
-  const deleteUser = async (user_id) => {
+  const createUser = async (user_id) => {
     const headers = {
       "Content-Type": "application/json",
       "Access-Control-Allow-Origin": "*",
@@ -35,48 +35,72 @@ const TableLine = ({
       Authorization: `Bearer ${getToken()}`,
     };
     await axios
-      .delete(
-        `https://dart-converter-api.azurewebsites.net/api/user/${user_id}/${getAplicationId()}`,
+      .post(
+        `https://dart-converter-api.azurewebsites.net/api/user`,
+        {
+          username: formInputs.username,
+          password: formInputs.password,
+          id_application: formInputs.id_application,
+        },
         {
           headers: headers,
         }
       )
-      .then((response) => {
+      .then(() => {
         navigate("/dart-converter/home");
       })
-      .catch((error) => {
+      .catch(() => {
         // setRequestErrorAwnser(error.response.data);
       });
   };
 
+  function handleChange(evt) {
+    const value = evt.target.value;
+    setFormInputs({
+      ...formInputs,
+      [evt.target.name]: value,
+    });
+  }
+
   return (
-    <TableRow
-      key={user_id}
-      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-    >
+    <TableRow sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+      <TableCell align="center" component="th" scope="row"></TableCell>
       <TableCell align="center" component="th" scope="row">
-        {user_id}
+        <TextField
+          fullWidth
+          id="outlined-name"
+          label="Usuário *"
+          name="username"
+          value={formInputs.username}
+          onChange={handleChange}
+        />
       </TableCell>
-      <TableCell align="center" component="th" scope="row">
-        {username}
+      <TableCell align="center">
+        <TextField
+          type="password"
+          fullWidth
+          id="outlined-name"
+          label="Senha *"
+          name="password"
+          value={formInputs.password}
+          onChange={handleChange}
+        />
       </TableCell>
-      <TableCell align="center">{formatPassword(password)}</TableCell>
-      <TableCell align="center">{id_application}</TableCell>
+      <TableCell align="center">{formInputs.id_application}</TableCell>
 
       <TableCell align="center">
         <ActionsButton>
-          <div>EDIT </div>
           <div
             onClick={() => {
-              deleteUser(user_id);
+              createUser();
               refreshUserBoards();
             }}
           >
-            DELETE
+            <AiTwotoneSave />
           </div>
         </ActionsButton>
       </TableCell>
     </TableRow>
   );
 };
-export default TableLine;
+export default NewUserLine;

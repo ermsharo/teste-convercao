@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Grid } from "../style/GridSystem";
 import { useNavigate } from "react-router-dom";
@@ -13,13 +13,29 @@ import Paper from "@mui/material/Paper";
 import { getUserInfo } from "../services/storageManagement";
 import { GetUsersData } from "../services/GetUsers";
 import TableLine from "./TableLine";
-
+import Button from "@mui/material/Button";
+import NewUserLine from "./NewUserLine";
 const BoardBox = styled.div`
   width: 100%;
   font-family: "Varela Round", sans-serif;
   height: 100%;
   grid-column: 2/8;
   padding-top: 62px;
+
+  input {
+    font-family: "Varela Round", sans-serif;
+  }
+  button {
+    font-family: "Varela Round", sans-serif;
+    font-weight: 700;
+    background-color: #673ab7;
+    border-radius: 20px;
+
+    &:hover {
+      background-color: #673ab7;
+      opacity: 0.9;
+    }
+  }
 `;
 
 const BoardTitleText = styled.div`
@@ -35,17 +51,43 @@ const TableBox = styled.div`
   margin-top: 16px;
 `;
 
+const CreateUserButton = styled.div`
+  padding: 16px;
+  margin-top: 16px;
+  button {
+    width: 20vw;
+  }
+
+  display: flex;
+  justify-content: end;
+`;
+
 const Board = () => {
   const navigate = useNavigate();
 
   const userInfo = getUserInfo();
   const [refreshBoard, setRefreshBoard] = useState(false);
   const [{ data, isLoading, isError }, setRefresh] = GetUsersData();
+  const [newUserArray, setNewUserArray] = useState([]);
+
+  useEffect(() => {
+    console.log("Effect");
+  }, [newUserArray]);
 
   const refreshUserBoards = () => {
     console.log("refresh board");
     setRefreshBoard(!refreshBoard);
     setRefresh(refreshBoard);
+  };
+
+  const fillNewUserArray = () => {
+    let newUsers = newUserArray;
+    newUsers.push({
+      username: "",
+      password: "",
+    });
+    setNewUserArray(newUsers);
+    console.log("->", newUserArray);
   };
 
   if (isLoading) return <>Loading</>;
@@ -58,6 +100,19 @@ const Board = () => {
           <BoardTitleText>
             Segue a lista de usuários cadastrados no sistema.
           </BoardTitleText>
+
+          <CreateUserButton>
+            {" "}
+            <Button
+              onClick={() => {
+                fillNewUserArray();
+              }}
+              fullWidth
+              variant="contained"
+            >
+              Criar usuario
+            </Button>
+          </CreateUserButton>
           <TableBox>
             <TableContainer component={Paper}>
               <Table aria-label="simple table">
@@ -80,6 +135,15 @@ const Board = () => {
                       refreshUserBoards={refreshUserBoards}
                     />
                   ))}
+
+                  {/* {newUserArray.map((row) => (
+                    <NewUserLine
+
+                      refreshUserBoards={refreshUserBoards}
+                    />
+                  ))} */}
+
+                  <NewUserLine refreshUserBoards={refreshUserBoards} />
                 </TableBody>
               </Table>
             </TableContainer>

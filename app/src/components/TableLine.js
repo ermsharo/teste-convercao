@@ -7,10 +7,16 @@ import { getToken, getAplicationId } from "./../services/storageManagement";
 import { useNavigate } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import { AiTwotoneDelete, AiTwotoneSave, AiFillEdit } from "react-icons/ai";
+
 const ActionsButton = styled.div`
   display: flex;
   padding: 8px;
   justify-content: space-around;
+  font-size: 32px;
+  svg {
+    cursor: pointer;
+  }
 `;
 
 const formatPassword = (password) => {
@@ -34,6 +40,28 @@ const TableLine = ({
     password: password,
     id_application: getAplicationId(),
   });
+
+  const editUser = async (user_id) => {
+    const headers = {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Credentials": true,
+      Authorization: `Bearer ${getToken()}`,
+    };
+    await axios
+      .delete(
+        `https://dart-converter-api.azurewebsites.net/api/user/${user_id}/${getAplicationId()}`,
+        {
+          headers: headers,
+        }
+      )
+      .then((response) => {
+        navigate("/dart-converter/home");
+      })
+      .catch((error) => {
+        // setRequestErrorAwnser(error.response.data);
+      });
+  };
 
   const deleteUser = async (user_id) => {
     const headers = {
@@ -86,7 +114,7 @@ const TableLine = ({
               setEditionMode(true);
             }}
           >
-            EDIT{" "}
+            <AiFillEdit />
           </div>
           <div
             onClick={() => {
@@ -94,7 +122,7 @@ const TableLine = ({
               refreshUserBoards();
             }}
           >
-            DELETE
+            <AiTwotoneDelete />
           </div>
         </ActionsButton>
       </TableCell>
@@ -119,7 +147,6 @@ const TableLine = ({
       </TableCell>
       <TableCell align="center">
         {editPassword ? (
-
           <TextField
             type="password"
             fullWidth
@@ -134,8 +161,7 @@ const TableLine = ({
             {" "}
             <Button
               onClick={() => {
-                setEditPassword(true)
-
+                setEditPassword(true);
               }}
               fullWidth
               variant="contained"
@@ -155,7 +181,7 @@ const TableLine = ({
               refreshUserBoards();
             }}
           >
-            SALVAR
+            <AiTwotoneSave />
           </div>
         </ActionsButton>
       </TableCell>
