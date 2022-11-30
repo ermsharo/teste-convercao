@@ -5,17 +5,35 @@ import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import { getToken, getAplicationId } from "./../services/storageManagement";
 import { useNavigate } from "react-router-dom";
-
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
 const ActionsButton = styled.div`
   display: flex;
   padding: 8px;
   justify-content: space-around;
 `;
 
-const TableLine = ({ user_id, username, password, id_application , refreshUserBoards}) => {
+const formatPassword = (password) => {
+  if (!password) return "???";
+};
+
+const TableLine = ({
+  user_id,
+  username,
+  password,
+  id_application,
+  refreshUserBoards,
+}) => {
   const navigate = useNavigate();
 
   const [editionMode, setEditionMode] = useState(false);
+  const [editPassword, setEditPassword] = useState(false);
+
+  const [formInputs, setFormInputs] = useState({
+    username: username,
+    password: password,
+    id_application: getAplicationId(),
+  });
 
   const deleteUser = async (user_id) => {
     const headers = {
@@ -39,7 +57,15 @@ const TableLine = ({ user_id, username, password, id_application , refreshUserBo
       });
   };
 
-  return (
+  function handleChange(evt) {
+    const value = evt.target.value;
+    setFormInputs({
+      ...formInputs,
+      [evt.target.name]: value,
+    });
+  }
+
+  return !editionMode ? (
     <TableRow
       key={user_id}
       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -50,12 +76,18 @@ const TableLine = ({ user_id, username, password, id_application , refreshUserBo
       <TableCell align="center" component="th" scope="row">
         {username}
       </TableCell>
-      <TableCell align="center">{password}</TableCell>
+      <TableCell align="center">{formatPassword(password)}</TableCell>
       <TableCell align="center">{id_application}</TableCell>
 
       <TableCell align="center">
         <ActionsButton>
-          <div>EDIT </div>
+          <div
+            onClick={() => {
+              setEditionMode(true);
+            }}
+          >
+            EDIT{" "}
+          </div>
           <div
             onClick={() => {
               deleteUser(user_id);
@@ -63,6 +95,67 @@ const TableLine = ({ user_id, username, password, id_application , refreshUserBo
             }}
           >
             DELETE
+          </div>
+        </ActionsButton>
+      </TableCell>
+    </TableRow>
+  ) : (
+    <TableRow
+      key={user_id}
+      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+    >
+      <TableCell align="center" component="th" scope="row">
+        {user_id}
+      </TableCell>
+      <TableCell align="center" component="th" scope="row">
+        <TextField
+          fullWidth
+          id="outlined-name"
+          label="Usuário *"
+          name="username"
+          value={formInputs.username}
+          onChange={handleChange}
+        />
+      </TableCell>
+      <TableCell align="center">
+        {editPassword ? (
+
+          <TextField
+            type="password"
+            fullWidth
+            id="outlined-name"
+            label="Senha *"
+            name="password"
+            value={formInputs.password}
+            onChange={handleChange}
+          />
+        ) : (
+          <>
+            {" "}
+            <Button
+              onClick={() => {
+                setEditPassword(true)
+
+              }}
+              fullWidth
+              variant="contained"
+            >
+              Alterar senha
+            </Button>
+          </>
+        )}
+      </TableCell>
+      <TableCell align="center">{id_application}</TableCell>
+
+      <TableCell align="center">
+        <ActionsButton>
+          <div
+            onClick={() => {
+              deleteUser(user_id);
+              refreshUserBoards();
+            }}
+          >
+            SALVAR
           </div>
         </ActionsButton>
       </TableCell>

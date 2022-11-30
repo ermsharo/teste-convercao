@@ -84,11 +84,12 @@ export default function SingIn() {
         navigate("/dart-converter/home");
       })
       .catch((error) => {
-        setRequestErrorAwnser(error.response.data);
+        //setRequestErrorAwnser(error.response.data);
       });
   };
 
   const createUser = async () => {
+    console.log("create user");
     const headers = {
       "Content-Type": "application/json",
       "Access-Control-Allow-Origin": "*",
@@ -108,13 +109,6 @@ export default function SingIn() {
       )
       .then((response) => {
         setRequestErrorAwnser(false);
-        setUserInfo(
-          response.data.user.id_user,
-          response.data.user.username,
-          response.data.access_token
-        );
-        console.log("user created",response );
-        navigate("/dart-converter/home");
       })
       .catch((error) => {
         // setRequestErrorAwnser(error.response.data);
@@ -130,7 +124,6 @@ export default function SingIn() {
       [evt.target.name]: value,
     });
   }
-
 
   return (
     <>
