@@ -5,6 +5,7 @@ import Button from "@mui/material/Button";
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { setUserInfo, getAplicationId } from "../services/storageManagement";
 
 const BoardBox = styled.div`
   width: 100%;
@@ -48,10 +49,11 @@ const LogoBox = styled.div`
 `;
 
 export default function SingIn() {
+  const navigate = useNavigate();
   const [formInputs, setFormInputs] = useState({
     username: "",
     password: "",
-    id_application: "48699c22-26a2-4126-9a63-f5d0dfd2768b",
+    id_application: getAplicationId(),
   });
 
   const singIn = async () => {
@@ -60,7 +62,7 @@ export default function SingIn() {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Credentials": true,
     };
-    console.log("response", formInputs);
+    // console.log("response", formInputs);
     await axios
       .post(
         "https://dart-converter-api.azurewebsites.net/api/auth/token",
@@ -75,9 +77,45 @@ export default function SingIn() {
       )
       .then((response) => {
         setRequestErrorAwnser(false);
-        // saveUserInfo(response.data.id, response.data.token, response.data.name);
-        // navigate("/");
-        console.log("Response here -> ", response);
+        setUserInfo(
+          response.data.user.id_user,
+          response.data.user.username,
+          response.data.access_token
+        );
+        navigate("/dart-converter/home");
+      })
+      .catch((error) => {
+        setRequestErrorAwnser(error.response.data);
+      });
+  };
+
+  const createUser = async () => {
+    const headers = {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Credentials": true,
+    };
+    // console.log("response", formInputs);
+    await axios
+      .post(
+        "https://dart-converter-api.azurewebsites.net/api/auth/token",
+        {
+          username: formInputs.username,
+          password: formInputs.password,
+          id_application: formInputs.id_application,
+        },
+        {
+          headers: headers,
+        }
+      )
+      .then((response) => {
+        setRequestErrorAwnser(false);
+        setUserInfo(
+          response.data.user.id_user,
+          response.data.user.username,
+          response.data.access_token
+        );
+        navigate("/dart-converter/home");
       })
       .catch((error) => {
         setRequestErrorAwnser(error.response.data);
@@ -85,8 +123,6 @@ export default function SingIn() {
   };
 
   const [requestErrorAwnser, setRequestErrorAwnser] = useState(false);
-
-  const navigate = useNavigate();
 
   function handleChange(evt) {
     const value = evt.target.value;
@@ -96,17 +132,9 @@ export default function SingIn() {
     });
   }
 
-  const saveUserInfo = (id, token, user) => {
-    localStorage.setItem("id", id);
-    localStorage.setItem("user", user);
-    localStorage.setItem("token", token);
-    localStorage.setItem("logged", true);
+  const loginUser = () => {
+    setUserInfo(formInputs.id_application, formInputs.username);
   };
-
-
-  const loginUser = () =>{
-    
-  }
 
   return (
     <>

@@ -9,7 +9,7 @@ export const setIsLogged = () => {
 export const getUserInfo = () => {
   return {
     id: localStorage.getItem("id"),
-    user: localStorage.getItem("user"),
+    user: localStorage.getItem("user_name"),
   };
 };
 
@@ -20,12 +20,12 @@ export const setUserInfo = (id, user, token) => {
   localStorage.setItem("is_logged", true);
 };
 
-export const setToken = () => {
-  return localStorage.getItem("token");
+export const getToken = () => {
+  return localStorage.getItem("user_session_token");
 };
 
-export const getToken = () => {
-  return localStorage.getItem("token");
+export const getAplicationId = () => {
+  return "48699c22-26a2-4126-9a63-f5d0dfd2768b";
 };
 
 export const logout = () => {
