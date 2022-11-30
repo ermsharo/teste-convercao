@@ -15,6 +15,8 @@ import { GetUsersData } from "../services/GetUsers";
 import TableLine from "./TableLine";
 import Button from "@mui/material/Button";
 import NewUserLine from "./NewUserLine";
+import Loading from "./Loading";
+
 const BoardBox = styled.div`
   width: 100%;
   font-family: "Varela Round", sans-serif;
@@ -70,8 +72,6 @@ const Board = () => {
   const [{ data, isLoading, isError }, setRefresh] = GetUsersData();
   const [newUserArray, setNewUserArray] = useState([]);
 
-
-
   const refreshUserBoards = () => {
     setRefreshBoard(!refreshBoard);
     setRefresh(refreshBoard);
@@ -94,7 +94,7 @@ const Board = () => {
     refreshUserBoards();
   };
 
-  if (isLoading) return <>Loading</>;
+  if (isLoading) return <Loading open={isLoading} />;
 
   if (data)
     return (
@@ -146,7 +146,6 @@ const Board = () => {
                       emptyNewUserArray={emptyNewUserArray}
                     />
                   ))}
-
                 </TableBody>
               </Table>
             </TableContainer>

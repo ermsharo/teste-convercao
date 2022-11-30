@@ -85,7 +85,6 @@ export default function SingIn() {
         }
       )
       .then((response) => {
-        setRequestErrorAwnser(false);
         setUserInfo(
           response.data.user.id_user,
           response.data.user.username,
@@ -95,7 +94,6 @@ export default function SingIn() {
         navigate("/dart-converter/home");
       })
       .catch((error) => {
-        //setRequestErrorAwnser(error.response.data);
         setLoading(false);
         alert("Falha ao realizar o login");
       });
@@ -122,17 +120,13 @@ export default function SingIn() {
       )
       .then((response) => {
         setLoading(false);
-        setRequestErrorAwnser(false);
         alert("Usuario criado com sucesso");
       })
       .catch((error) => {
         setLoading(false);
-        // setRequestErrorAwnser(error.response.data);
         alert("Dados de cadastro invalidos");
       });
   };
-
-  const [requestErrorAwnser, setRequestErrorAwnser] = useState(false);
 
   function handleChange(evt) {
     const value = evt.target.value;
